@@ -22,20 +22,20 @@ mainWindow.show()
 function labelFootage(comps, footages) {
     app.beginUndoGroup('Identify Used Footage')
     for (var i = 0; i < comps.length; i++) {
-        for (var l = 1; l <= comps[i].numLayers; l++) { // iterates the comp layers
-            if (comps[i].layer(l).source) { // if layers has a source
-                for (var f = 0; f < footages.length; f++) { // iterates footage items & compares each one to see if it exists
+        for (var l = 1; l <= comps[i].numLayers; l++) { // iterate the comp layers
+            if (comps[i].layer(l).source) { // if layer has a source
+                for (var f = 0; f < footages.length; f++) { // iterate footage items & compare each one to see if it exists, if true, add an 'On use' comment
                     if (comps[i].layer(l).source == footages[f]) {
-                        comps[i].layer(l).source.label = 9 // add green label
+                        comps[i].layer(l).source.comment = 'On use'
                     }
                 }
             }
         }
     }
-    // iterates the footage items. if any are not orange (used), turns them purple (unused)
+    // add 'Unused' comment
     for (var i = 0; i < footages.length; i++) {
-        if(footages[i].label != 9) {
-            footages[i].label = 1 // add red label
+        if(footages[i].comment != 'On use') {
+            footages[i].comment = 'Unused'
         }
     }
     app.endUndoGroup();
@@ -44,19 +44,19 @@ function labelFootage(comps, footages) {
 function removeUnusedFootage(comps, footages) {
     app.beginUndoGroup('Remove Unused Footage')
     for (var i = 0; i < comps.length; i++) {
-        for (var l = 1; l <= comps[i].numLayers; l++) { // iterates the comp layers
+        for (var l = 1; l <= comps[i].numLayers; l++) { // iterate the comp layers
             if (comps[i].layer(l).source) { // if layers has a source
-                for (var f = 0; f < footages.length; f++) { // iterates footage items & compares each one to see if it exists
+                for (var f = 0; f < footages.length; f++) { // iterate footage items & compare each one to see if it exists, if true, add an 'On use' comment
                     if (comps[i].layer(l).source == footages[f]) {
-                        comps[i].layer(l).source.label = 9 // add green label
+                        comps[i].layer(l).source.comment = 'On use'
                     }
                 }
             }
         }
     }
-    // iterates the footage items. if any are not orange (used), removes them
+    // delete unused footage
     for (var i = 0; i < footages.length; i++) {
-        if(footages[i].label != 9) {
+        if(footages[i].comment != 'On use') {
             footages[i].remove()
         }
     }
