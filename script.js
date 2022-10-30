@@ -3,27 +3,40 @@ var footageItems = getFootage()
 
 // UI
 var mainWindow = new Window('palette', 'Label and Remove Unused Items', undefined)
-mainWindow.orientation = 'row'
-var labelBtn = mainWindow.add('button', undefined, 'Label used & unused')
-var removeAllBtn = mainWindow.add('button', undefined, 'Remove unused files')
-var removeImagesBtn = mainWindow.add('button', undefined, 'Remove unused images')
-var removeVideosBtn = mainWindow.add('button', undefined, 'Remove unused videos')
-var removeAudioBtn = mainWindow.add('button', undefined, 'Remove unused audio')
+mainWindow.orientation = 'column'
+var labelRemoveAllGroup = mainWindow.add('panel', undefined, 'All files')
+labelRemoveAllGroup.orientation = 'column'
+var removeByTypeGroup = mainWindow.add('panel', undefined, 'By file type')
+removeByTypeGroup.orientation = 'column'
+
+var labelBtn = labelRemoveAllGroup.add('button', undefined, 'Label used & unused')
+var removeAllBtn = labelRemoveAllGroup.add('button', undefined, 'Remove unused')
+var removeImagesBtn = removeByTypeGroup.add('button', undefined, 'Remove unused images')
+var removeVideosBtn = removeByTypeGroup.add('button', undefined, 'Remove unused videos')
+var removeAudioBtn = removeByTypeGroup.add('button', undefined, 'Remove unused audio')
+var cancelBtn = mainWindow.add('button', undefined, 'Cancel')
 
 labelBtn.onClick = function() {
     labelFootage(comps, footageItems)
 }
 removeAllBtn.onClick = function() {
     removeUnusedFootage(comps, footageItems)
+    mainWindow.close()
 }
 removeImagesBtn.onClick = function() {
     removeUnusedImages(comps, footageItems)
+    mainWindow.close()
 }
 removeVideosBtn.onClick = function() {
     removeUnusedVideos(comps, footageItems)
+    mainWindow.close()
 }
 removeAudioBtn.onClick = function() {
     removeUnusedAudio(comps, footageItems)
+    mainWindow.close()
+}
+cancelBtn.onClick = function() {
+    mainWindow.close()
 }
 
 mainWindow.center()
@@ -39,7 +52,7 @@ function labelFootage(comps, footages) {
             footages[i].comment = 'Unused'
         }
     }
-    app.endUndoGroup();
+    app.endUndoGroup()
 }
 
 function removeUnusedFootage(comps, footages) {
@@ -51,7 +64,7 @@ function removeUnusedFootage(comps, footages) {
             footages[i].remove()
         }
     }
-    app.endUndoGroup();
+    app.endUndoGroup()
 }
 
 function removeUnusedImages(comps, footages) {
@@ -59,7 +72,7 @@ function removeUnusedImages(comps, footages) {
     commentUsed(comps, footages)
     removeByType(footages, 'jpg')
     removeByType(footages, 'png')
-    app.endUndoGroup();
+    app.endUndoGroup()
 }
 
 function removeUnusedVideos(comps, footages) {
@@ -67,7 +80,7 @@ function removeUnusedVideos(comps, footages) {
     commentUsed(comps, footages)
     removeByType(footages, 'mp4')
     removeByType(footages, 'mov')
-    app.endUndoGroup();
+    app.endUndoGroup()
 }
 
 function removeUnusedAudio(comps, footages) {
@@ -75,7 +88,7 @@ function removeUnusedAudio(comps, footages) {
     commentUsed(comps, footages)
     removeByType(footages, 'mp3')
     removeByType(footages, 'wav')
-    app.endUndoGroup();
+    app.endUndoGroup()
 }
 
 function getComps() {
@@ -120,6 +133,8 @@ function removeByType(footages, type) {
             var item = footages[i]
             if (item.name.substring(item.name.length-3, item.name.length).toLowerCase() == type) {
                 footages[i].remove()
+            } else {
+                mainWindow.close()
             }
         }
     }
