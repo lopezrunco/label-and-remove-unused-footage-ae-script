@@ -1,4 +1,4 @@
-This script allows to label used and unused files in After Effects compositions, remove all unused files and remove unused by file type (image, video or audio).
+In the dynamic world of Adobe After Effects, organization is key. This script provides the artist with the ability to label and efficiently manage used and unused files within compositions.
 
 ### Instructions
 - Download the file script.js
